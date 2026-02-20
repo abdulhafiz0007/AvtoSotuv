@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  telegramId BigInt   @unique @map("telegram_id")
+  username   String?
+  firstName  String   @map("first_name")
+  phone      String?
+  isBlocked  Boolean  @default(false) @map("is_blocked")
+  isAdmin    Boolean  @default(false) @map("is_admin")
+  createdAt  DateTime @default(now()) @map("created_at")
+  cars       Car[]
+
+  @@map("users")
+}
+
+model Car {
+  id          Int        @id @default(autoincrement())
+  userId      Int        @map("user_id")
+  title       String
+  brand       String
+  year        Int
+  price       Int
+  mileage     Int
+  city        String
+  description String
+  views       Int        @default(0)
+  status      String     @default("active")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  user        User       @relation(fields: [userId], references: [id])
+  images      CarImage[]
+
+  @@index([brand])
+  @@index([city])
+  @@index([price])
+  @@index([year])
+  @@index([status])
+  @@index([userId])
+  @@map("cars")
+}
+
+model CarImage {
+  id       Int    @id @default(autoincrement())
+  carId    Int    @map("car_id")
+  imageUrl String @map("image_url")
+  car      Car    @relation(fields: [carId], references: [id], onDelete: Cascade)
+
+  @@map("car_images")
+}
