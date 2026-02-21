@@ -6,7 +6,7 @@ async function seed() {
     // Create admin user
     const admin = await prisma.user.upsert({
         where: { telegramId: BigInt(6552496082) },
-        update: {},
+        update: { isAdmin: true },
         create: {
             telegramId: BigInt(6552496082),
             firstName: 'Admin',
