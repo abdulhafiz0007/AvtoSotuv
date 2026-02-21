@@ -93,7 +93,53 @@ header {
 .header__actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+}
+
+.lang-switcher {
+  display: flex;
+  align-items: center;
+  background: var(--secondary-bg);
+  border-radius: 10px;
+  padding: 2px;
+  gap: 1px;
+}
+
+.lang-btn {
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: var(--hint);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.lang-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: var(--secondary-bg);
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:active {
+  transform: scale(0.9);
 }
 
 .profile-trigger {
