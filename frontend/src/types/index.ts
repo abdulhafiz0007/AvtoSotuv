@@ -59,6 +59,7 @@ export interface Constants {
     i18n: {
         uz: Record<string, string>;
         ru: Record<string, string>;
+        en: Record<string, string>;
     };
 }
 
