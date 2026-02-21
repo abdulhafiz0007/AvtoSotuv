@@ -6,9 +6,11 @@ import TelegramBot from 'node-telegram-bot-api';
 const BOT_TOKEN = process.env.BOT_TOKEN!;
 const MINI_APP_URL = process.env.MINI_APP_URL || 'https://your-domain.com';
 
-const bot = new TelegramBot(BOT_TOKEN, { polling: true });
+console.log('🤖 AvtoSotuv Bot is starting...');
+console.log('🔗 Mini App URL:', MINI_APP_URL);
+console.log('🔑 Bot Token ends with:', BOT_TOKEN.slice(-4));
 
-console.log('🤖 AvtoSotuv Bot is running...');
+const bot = new TelegramBot(BOT_TOKEN, { polling: true });
 
 // /start command
 bot.onText(/\/start/, (msg) => {
@@ -31,12 +33,6 @@ bot.onText(/\/start/, (msg) => {
                         {
                             text: '🚗 Mashina Bozori',
                             web_app: { url: MINI_APP_URL },
-                        },
-                    ],
-                    [
-                        {
-                            text: '📢 Kanal',
-                            url: 'https://t.me/avtosotuv_uz',
                         },
                     ],
                 ],

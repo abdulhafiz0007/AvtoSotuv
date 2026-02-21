@@ -107,6 +107,53 @@ async function seed() {
         console.log(`✅ Car created: ${car.title}`);
     }
 
+    // Create sample services
+    const sampleServices = [
+        {
+            title: 'UNG Petrol - Bodomzor',
+            type: 'petrol',
+            city: 'Toshkent',
+            address: 'Bodomzor yo\'li, 1',
+            phone: '+998711234567',
+            description: 'Benzin va Dizel yoqilg\'isi. Kafe xizmati mavjud.',
+            rating: 4.8,
+        },
+        {
+            title: 'Usta Ali - Motor Ta\'miri',
+            type: 'repair',
+            city: 'Toshkent',
+            address: 'G\'uncha chorrahasi',
+            phone: '+998901234567',
+            description: 'Dvigatel va xodovoy qismlarini sifatli ta\'mirlash.',
+            rating: 4.9,
+        },
+        {
+            title: 'Crystal Auto Wash',
+            type: 'wash',
+            city: 'Samarqand',
+            address: 'Registon ko\'chasi',
+            phone: '+998911234567',
+            description: 'Professional avtoyuvish va ximchistka xizmatlari.',
+            rating: 4.7,
+        },
+        {
+            title: 'Tire Pro Center',
+            type: 'tire',
+            city: "Farg'ona",
+            address: 'Mustaqillik ko\'chasi',
+            phone: '+998931234567',
+            description: 'Balon almashtirish, balansirovka va shinalar sotuvi.',
+            rating: 4.6,
+        },
+    ];
+
+    for (const serviceData of sampleServices) {
+        await prisma.service.create({
+            data: serviceData,
+        });
+        console.log(`✅ Service created: ${serviceData.title}`);
+    }
+
     console.log('🎉 Seeding complete!');
 }
 

@@ -46,6 +46,24 @@ model Car {
   @@map("cars")
 }
 
+model Service {
+  id          Int      @id @default(autoincrement())
+  title       String
+  type        String   // petrol, repair, wash, tire, etc.
+  address     String
+  city        String
+  lat         Float?
+  lng         Float?
+  phone       String?
+  description String?
+  rating      Float    @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([type])
+  @@index([city])
+  @@map("services")
+}
+
 model CarImage {
   id       Int    @id @default(autoincrement())
   carId    Int    @map("car_id")

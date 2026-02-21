@@ -12,6 +12,7 @@ import carRoutes from './routes/cars';
 import uploadRoutes from './routes/upload';
 import adminRoutes from './routes/admin';
 import constantsRoutes from './routes/constants';
+import serviceRoutes from './routes/services';
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use('/api/cars', carRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/constants', constantsRoutes);
+app.use('/api/services', serviceRoutes);
 
 // Health check
 app.get('/api/health', (_req, res) => {
