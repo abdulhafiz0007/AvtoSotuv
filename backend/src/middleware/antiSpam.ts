@@ -8,6 +8,11 @@ export async function antiSpamMiddleware(req: Request, res: Response, next: Next
         return;
     }
 
+    // Admins are exempt from anti-spam
+    if (req.user.isAdmin) {
+        return next();
+    }
+
     const userId = req.user.userId;
 
     // Check if user is blocked
