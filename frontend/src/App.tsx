@@ -34,10 +34,7 @@ const App: React.FC = () => {
                 const initData = telegram?.initData;
 
                 if (initData || import.meta.env.DEV) {
-                    const res = await axios.post('/api/auth/login', { initData });
-                    setUser(res.data.user);
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
-
+                    await useStore.getState().login(initData || 'dev_mode');
                     // Set Telegram theme color
                     telegram?.expand();
                 }

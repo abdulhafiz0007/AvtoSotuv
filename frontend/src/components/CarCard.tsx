@@ -19,7 +19,7 @@ const CarCard: React.FC<Props> = ({ car }) => {
                 <img src={mainImage} alt={car.title} />
             </div>
             <div className="info">
-                <span className="car-price">{car.price.toLocaleString()} UZS</span>
+                <span className="car-price">{(car.price || 0).toLocaleString()} UZS</span>
                 <h3 className="car-title">{car.title}</h3>
                 <div className="car-meta">
                     <span>{car.year} y.</span>

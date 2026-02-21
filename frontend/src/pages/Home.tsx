@@ -4,7 +4,11 @@ import CarCard from '../components/CarCard';
 import { Search } from 'lucide-react';
 
 const Home: React.FC = () => {
-    const { cars, fetchCars, setLoading, t, constants } = useStore(); // Use fetchCars from store
+    const cars = useStore(state => state.cars);
+    const fetchCars = useStore(state => state.fetchCars);
+    const loading = useStore(state => state.loading);
+    const t = useStore(state => state.t);
+    const constants = useStore(state => state.constants);
     const [search, setSearch] = useState('');
     const [brand, setBrand] = useState('');
 
@@ -58,17 +62,25 @@ const Home: React.FC = () => {
 
             <h2 className="section-title">{t('newest')}</h2>
 
-            <div className="content-grid">
-                {cars.map(car => (
-                    <CarCard key={car.id} car={car} />
-                ))}
-            </div>
-
-            {cars.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--hint)' }}>
-                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚗</div>
-                    <div style={{ fontWeight: '600' }}>{t('noListings')}</div>
+            {loading && cars.length === 0 ? (
+                <div className="loading" style={{ textAlign: 'center', padding: '40px' }}>
+                    <div className="spinner" />
                 </div>
+            ) : (
+                <>
+                    <div className="content-grid">
+                        {Array.isArray(cars) && cars.map(car => (
+                            <CarCard key={car.id} car={car} />
+                        ))}
+                    </div>
+
+                    {cars.length === 0 && (
+                        <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--hint)' }}>
+                            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚗</div>
+                            <div style={{ fontWeight: '600' }}>{t('noListings')}</div>
+                        </div>
+                    )}
+                </>
             )}
         </div>
     );
