@@ -18,6 +18,7 @@ interface AppState {
 
     // UI
     locale: Locale;
+    theme: 'light' | 'dark';
     filters: Filters;
 
     // Actions
@@ -31,6 +32,7 @@ interface AppState {
     setCars: (cars: Car[]) => void;
     setServices: (services: Service[]) => void;
     setLoading: (loading: boolean) => void;
+    setTheme: (theme: 'light' | 'dark') => void;
     setFilters: (filters: Partial<Filters>) => void;
     resetFilters: () => void;
 
@@ -55,6 +57,7 @@ export const useStore = create<AppState>((set, get) => ({
     currentPage: 1,
     constants: null,
     locale: (localStorage.getItem('avtosotuv_locale') as Locale) || 'uz',
+    theme: (localStorage.getItem('avtosotuv_theme') as 'light' | 'dark') || 'light',
     filters: { ...defaultFilters },
 
     login: async (initData: string) => {
@@ -78,6 +81,12 @@ export const useStore = create<AppState>((set, get) => ({
     setLocale: (locale: Locale) => {
         localStorage.setItem('avtosotuv_locale', locale);
         set({ locale });
+    },
+
+    setTheme: (theme: 'light' | 'dark') => {
+        localStorage.setItem('avtosotuv_theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+        set({ theme });
     },
 
     fetchCars: async (filters?: Filters) => {

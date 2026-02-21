@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useStore } from '../store';
 import { formatPrice } from '../components/CarCard';
 import api from '../api/client';
-import type { Car } from '../types';
+import type { Car, Locale } from '../types';
 
 const Profile: React.FC = () => {
-    const { user, t } = useStore();
+    const { user, t, locale, setLocale, theme, setTheme } = useStore();
     const [cars, setCars] = useState<Car[]>([]);
     const [loading, setLoading] = useState(true);
     const [deleteId, setDeleteId] = useState<number | null>(null);
@@ -23,7 +23,9 @@ const Profile: React.FC = () => {
 
     useEffect(() => {
         fetchMyCars();
-    }, []);
+        // Sync theme with document on mount
+        document.documentElement.setAttribute('data-theme', theme);
+    }, [theme]);
 
     const handleDelete = async (id: number) => {
         try {
@@ -50,6 +52,45 @@ const Profile: React.FC = () => {
                     <div style={{ background: 'var(--secondary-bg)', padding: '8px 16px', borderRadius: '12px' }}>
                         <div style={{ fontSize: '18px', fontWeight: '800' }}>{cars.length}</div>
                         <div style={{ fontSize: '10px', color: 'var(--hint)', textTransform: 'uppercase' }}>E'lonlar</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Settings Section */}
+            <div className="settings-section" style={{ marginBottom: '32px' }}>
+                <h2 className="section-title" style={{ padding: '0 0 12px 0' }}>Sozlamalar</h2>
+
+                <div className="card" style={{ padding: '16px' }}>
+                    <div style={{ marginBottom: '16px' }}>
+                        <div style={{ fontSize: '12px', color: 'var(--hint)', fontWeight: 'bold', marginBottom: '8px', textTransform: 'uppercase' }}>Til / Язык</div>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            {(['uz', 'ru', 'en'] as Locale[]).map(l => (
+                                <button
+                                    key={l}
+                                    onClick={() => setLocale(l)}
+                                    className={`btn ${locale === l ? 'btn-primary' : ''}`}
+                                    style={{ flex: 1, padding: '10px', fontSize: '14px', background: locale === l ? 'var(--primary)' : 'var(--secondary-bg)', color: locale === l ? '#fff' : 'var(--text)' }}
+                                >
+                                    {l.toUpperCase()}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style={{ fontSize: '12px', color: 'var(--hint)', fontWeight: 'bold', marginBottom: '8px', textTransform: 'uppercase' }}>Mavzu / Тема</div>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            {(['light', 'dark'] as const).map(t => (
+                                <button
+                                    key={t}
+                                    onClick={() => setTheme(t)}
+                                    className={`btn ${theme === t ? 'btn-primary' : ''}`}
+                                    style={{ flex: 1, padding: '10px', fontSize: '14px', background: theme === t ? 'var(--primary)' : 'var(--secondary-bg)', color: theme === t ? '#fff' : 'var(--text)' }}
+                                >
+                                    {t === 'light' ? '☀️ Kunduzgi' : '🌙 Tungi'}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

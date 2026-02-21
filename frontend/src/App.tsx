@@ -16,7 +16,12 @@ import Admin from './pages/Admin';
 import Services from './pages/Services';
 
 const App: React.FC = () => {
-    const { setUser, setLoading } = useStore();
+    const { setUser, setLoading, theme } = useStore();
+
+    useEffect(() => {
+        // Apply theme
+        document.documentElement.setAttribute('data-theme', theme);
+    }, [theme]);
 
     useEffect(() => {
         const login = async () => {
