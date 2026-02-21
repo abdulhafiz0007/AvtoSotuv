@@ -4,7 +4,7 @@ import { useStore } from '../store';
 import CarCard from '../components/CarCard';
 
 const Home: React.FC = () => {
-    const { cars, setCars, setLoading } = useStore();
+    const { cars, setCars, setLoading, t, constants } = useStore();
     const [search, setSearch] = useState('');
     const [brand, setBrand] = useState('');
 
@@ -27,12 +27,14 @@ const Home: React.FC = () => {
         fetchCars();
     }, [search, brand, setCars, setLoading]);
 
+    const brands = constants?.brands || ['Chevrolet', 'BYD', 'Kia', 'Hyundai', 'Toyota'];
+
     return (
         <div className="home">
             <div style={{ padding: '16px 16px 0 16px' }}>
                 <input
                     type="text"
-                    placeholder="Mashina qidirish..."
+                    placeholder={t('search')}
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     style={{ background: 'var(--secondary-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px' }}
@@ -40,18 +42,24 @@ const Home: React.FC = () => {
             </div>
 
             <div className="filters-scroll">
-                {['all', 'Chevrolet', 'BYD', 'Kia', 'Hyundai', 'Toyota'].map(b => (
+                <div
+                    className={`filter-chip ${brand === '' ? 'active' : ''}`}
+                    onClick={() => setBrand('')}
+                >
+                    {t('allBrands')}
+                </div>
+                {brands.slice(0, 6).map(b => (
                     <div
                         key={b}
-                        className={`filter-chip ${brand === (b === 'all' ? '' : b) ? 'active' : ''}`}
-                        onClick={() => setBrand(b === 'all' ? '' : b)}
+                        className={`filter-chip ${brand === b ? 'active' : ''}`}
+                        onClick={() => setBrand(b)}
                     >
-                        {b === 'all' ? 'Hammasi' : b}
+                        {b}
                     </div>
                 ))}
             </div>
 
-            <h2 className="section-title">Eng so'nggi e'lonlar</h2>
+            <h2 className="section-title">{t('newest')}</h2>
 
             <div className="content-grid">
                 {cars.map(car => (
@@ -61,7 +69,7 @@ const Home: React.FC = () => {
 
             {cars.length === 0 && (
                 <div style={{ textAlign: 'center', padding: '40px', color: 'var(--hint)' }}>
-                    E'lonlar topilmadi
+                    {t('noListings')}
                 </div>
             )}
         </div>
