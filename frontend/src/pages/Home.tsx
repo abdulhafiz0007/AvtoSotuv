@@ -1,43 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useStore } from '../store';
 import CarCard from '../components/CarCard';
+import { Search } from 'lucide-react';
 
 const Home: React.FC = () => {
-    const { cars, setCars, setLoading, t, constants } = useStore();
+    const { cars, fetchCars, setLoading, t, constants } = useStore(); // Use fetchCars from store
     const [search, setSearch] = useState('');
     const [brand, setBrand] = useState('');
 
     useEffect(() => {
-        const fetchCars = async () => {
-            setLoading(true);
-            try {
-                const params: any = {};
-                if (search) params.search = search;
-                if (brand) params.brand = brand;
-
-                const res = await axios.get('/api/cars', { params });
-                setCars(res.data.cars);
-            } catch (err) {
-                console.error('Fetch cars error:', err);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchCars();
-    }, [search, brand, setCars, setLoading]);
+        // Use the store action to fetch cars with filters
+        fetchCars({
+            search: search || undefined,
+            brand: brand || undefined,
+            page: 1,
+            sort: 'newest'
+        });
+    }, [search, brand, fetchCars]);
 
     const brands = constants?.brands || ['Chevrolet', 'BYD', 'Kia', 'Hyundai', 'Toyota'];
 
     return (
         <div className="home">
-            <div style={{ padding: '16px 16px 0 16px' }}>
+            <div style={{ padding: '16px 16px 0 16px', position: 'relative' }}>
+                <Search size={18} color="var(--hint)" style={{ position: 'absolute', left: '28px', top: '30px' }} />
                 <input
                     type="text"
                     placeholder={t('search')}
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    style={{ background: 'var(--secondary-bg)', border: '1px solid var(--glass-border)', borderRadius: '16px' }}
+                    style={{
+                        background: 'var(--secondary-bg)',
+                        border: '1px solid var(--glass-border)',
+                        borderRadius: '16px',
+                        paddingLeft: '44px'
+                    }}
                 />
             </div>
 
@@ -48,7 +45,7 @@ const Home: React.FC = () => {
                 >
                     {t('allBrands')}
                 </div>
-                {brands.slice(0, 6).map(b => (
+                {brands.slice(0, 10).map(b => (
                     <div
                         key={b}
                         className={`filter-chip ${brand === b ? 'active' : ''}`}
@@ -68,8 +65,9 @@ const Home: React.FC = () => {
             </div>
 
             {cars.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '40px', color: 'var(--hint)' }}>
-                    {t('noListings')}
+                <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--hint)' }}>
+                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚗</div>
+                    <div style={{ fontWeight: '600' }}>{t('noListings')}</div>
                 </div>
             )}
         </div>

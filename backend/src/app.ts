@@ -16,6 +16,11 @@ import serviceRoutes from './routes/services';
 
 const app = express();
 
+// BigInt serialization fix
+(BigInt.prototype as any).toJSON = function () {
+    return this.toString();
+};
+
 // Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, '..', config.uploadDir);
 if (!fs.existsSync(uploadsDir)) {

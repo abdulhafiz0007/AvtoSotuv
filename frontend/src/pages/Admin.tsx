@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../store';
 import api from '../api/client';
+import { BarChart3, Car, Users, Settings, Lock, Trash2, Ban, Unlock } from 'lucide-react';
 
 interface Stats {
     totalUsers: number;
@@ -32,7 +33,7 @@ interface AdminCar {
 }
 
 const Admin: React.FC = () => {
-    const { user, t } = useStore();
+    const { user, t, theme } = useStore();
     const [tab, setTab] = useState<'stats' | 'listings' | 'users'>('stats');
     const [stats, setStats] = useState<Stats | null>(null);
     const [users, setUsers] = useState<AdminUser[]>([]);
@@ -82,7 +83,7 @@ const Admin: React.FC = () => {
     };
 
     const handleDeleteCar = async (id: number) => {
-        if (!window.confirm('Haqiqatan ham o\'chirmoqchimisiz?')) return;
+        if (!window.confirm(t('deleteConfirm'))) return;
         try {
             await api.delete(`/admin/cars/${id}`);
             setCars((prev) => prev.filter((c) => c.id !== id));
@@ -105,21 +106,31 @@ const Admin: React.FC = () => {
     if (!user?.isAdmin) {
         return (
             <div className="admin-page" style={{ padding: '100px 20px', textAlign: 'center' }}>
-                <div style={{ fontSize: '48px' }}>🔒</div>
-                <div style={{ marginTop: '16px', color: 'var(--hint)' }}>Admin huquqi talab etiladi</div>
+                <Lock size={64} color="var(--hint)" style={{ margin: '0 auto 20px auto' }} />
+                <div style={{ fontWeight: '800', fontSize: '20px' }}>Admin huquqi talab etiladi</div>
+                <div style={{ marginTop: '8px', color: 'var(--hint)' }}>Bu sahifa faqat ma'murlar uchun.</div>
             </div>
         );
     }
 
     return (
         <div className="admin-page" style={{ padding: '24px 16px 120px 16px' }}>
-            <h1 className="section-title" style={{ padding: '0 0 20px 0' }}>⚙️ Admin Panel</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+                <Settings size={28} color="var(--primary)" />
+                <h1 className="section-title" style={{ padding: 0, margin: 0 }}>Admin Panel</h1>
+            </div>
 
             {/* Tabs */}
             <div className="filters-scroll" style={{ marginBottom: '24px' }}>
-                <div className={`filter-chip ${tab === 'stats' ? 'active' : ''}`} onClick={() => setTab('stats')}>📊 Statistika</div>
-                <div className={`filter-chip ${tab === 'listings' ? 'active' : ''}`} onClick={() => setTab('listings')}>🚗 E'lonlar</div>
-                <div className={`filter-chip ${tab === 'users' ? 'active' : ''}`} onClick={() => setTab('users')}>👥 Userlar</div>
+                <div className={`filter-chip ${tab === 'stats' ? 'active' : ''}`} onClick={() => setTab('stats')} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <BarChart3 size={16} /> Statistika
+                </div>
+                <div className={`filter-chip ${tab === 'listings' ? 'active' : ''}`} onClick={() => setTab('listings')} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Car size={16} /> E'lonlar
+                </div>
+                <div className={`filter-chip ${tab === 'users' ? 'active' : ''}`} onClick={() => setTab('users')} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Users size={16} /> Userlar
+                </div>
             </div>
 
             {loading ? (
@@ -129,20 +140,32 @@ const Admin: React.FC = () => {
                     {tab === 'stats' && stats && (
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
                             <div className="card" style={{ padding: '20px' }}>
+                                <div style={{ background: 'rgba(51,144,236,0.1)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', marginBottom: '12px' }}>
+                                    <Users size={20} />
+                                </div>
                                 <div style={{ fontSize: '24px', fontWeight: '900' }}>{stats.totalUsers}</div>
-                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase' }}>Userlar</div>
+                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase', fontWeight: '700' }}>Userlar</div>
                             </div>
                             <div className="card" style={{ padding: '20px' }}>
+                                <div style={{ background: 'rgba(51,144,236,0.1)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', marginBottom: '12px' }}>
+                                    <Car size={20} />
+                                </div>
                                 <div style={{ fontSize: '24px', fontWeight: '900' }}>{stats.totalListings}</div>
-                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase' }}>E'lonlar</div>
+                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase', fontWeight: '700' }}>E'lonlar</div>
                             </div>
                             <div className="card" style={{ padding: '20px' }}>
+                                <div style={{ background: 'rgba(52,199,89,0.1)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#34c759', marginBottom: '12px' }}>
+                                    <Lock size={20} />
+                                </div>
                                 <div style={{ fontSize: '24px', fontWeight: '900' }}>{stats.activeListings}</div>
-                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase' }}>Faol</div>
+                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase', fontWeight: '700' }}>Faol</div>
                             </div>
                             <div className="card" style={{ padding: '20px' }}>
+                                <div style={{ background: 'rgba(255,149,0,0.1)', width: '36px', height: '36px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ff9500', marginBottom: '12px' }}>
+                                    <BarChart3 size={20} />
+                                </div>
                                 <div style={{ fontSize: '24px', fontWeight: '900' }}>{stats.totalViews}</div>
-                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase' }}>Ko'rishlar</div>
+                                <div style={{ fontSize: '11px', color: 'var(--hint)', textTransform: 'uppercase', fontWeight: '700' }}>Ko'rishlar</div>
                             </div>
                         </div>
                     )}
@@ -153,13 +176,17 @@ const Admin: React.FC = () => {
                                 <div key={car.id} className="card" style={{ padding: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div>
                                         <div style={{ fontWeight: '700', fontSize: '14px' }}>{car.title}</div>
-                                        <div style={{ fontSize: '11px', color: 'var(--hint)' }}>{car.user.firstName} | {car.brand}</div>
+                                        <div style={{ fontSize: '11px', color: 'var(--hint)', display: 'flex', gap: '6px' }}>
+                                            <span>{car.user.firstName}</span>
+                                            <span>•</span>
+                                            <span>{car.brand}</span>
+                                        </div>
                                     </div>
                                     <button
                                         onClick={() => handleDeleteCar(car.id)}
-                                        style={{ padding: '6px 12px', borderRadius: '8px', background: 'rgba(255,59,48,0.1)', color: '#ff3b30', border: 'none', fontSize: '12px', fontWeight: '700' }}
+                                        style={{ padding: '10px', borderRadius: '10px', background: 'rgba(255,59,48,0.1)', color: '#ff3b30', border: 'none', cursor: 'pointer' }}
                                     >
-                                        O'chirish
+                                        <Trash2 size={18} />
                                     </button>
                                 </div>
                             ))}
@@ -176,9 +203,9 @@ const Admin: React.FC = () => {
                                     </div>
                                     <button
                                         onClick={() => handleBlockUser(u.id)}
-                                        style={{ padding: '6px 12px', borderRadius: '8px', background: u.isBlocked ? 'var(--primary)' : 'rgba(255,59,48,0.1)', color: u.isBlocked ? '#fff' : '#ff3b30', border: 'none', fontSize: '12px', fontWeight: '700' }}
+                                        style={{ padding: '8px 12px', borderRadius: '10px', background: u.isBlocked ? 'var(--primary)' : 'rgba(255,59,48,0.1)', color: u.isBlocked ? '#fff' : '#ff3b30', border: 'none', fontSize: '12px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
                                     >
-                                        {u.isBlocked ? 'Unblock' : 'Block'}
+                                        {u.isBlocked ? <><Unlock size={14} /> Unblock</> : <><Ban size={14} /> Block</>}
                                     </button>
                                 </div>
                             ))}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useStore } from '../store';
+import { Moon, Sun, Languages, User as UserIcon } from 'lucide-react';
 import type { Locale } from '../types';
 
 const Header: React.FC = () => {
@@ -16,6 +17,9 @@ const Header: React.FC = () => {
             <div className="header__actions">
                 {/* Language Switcher */}
                 <div className="lang-switcher">
+                    <div className="lang-icon" style={{ padding: '0 4px', color: 'var(--hint)' }}>
+                        <Languages size={14} />
+                    </div>
                     {locales.map(l => (
                         <button
                             key={l}
@@ -31,9 +35,8 @@ const Header: React.FC = () => {
                 <button
                     className="theme-toggle"
                     onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-                    title={theme === 'light' ? 'Dark mode' : 'Light mode'}
                 >
-                    {theme === 'light' ? '🌙' : '☀️'}
+                    {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
                 </button>
 
                 {/* Profile Avatar */}
@@ -41,8 +44,8 @@ const Header: React.FC = () => {
                     {tgUser?.photo_url ? (
                         <img src={tgUser.photo_url} alt="Profile" />
                     ) : (
-                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--primary)', color: '#fff', fontWeight: '900', fontSize: '16px', borderRadius: '50%' }}>
-                            {tgUser?.first_name?.[0] || user?.firstName?.[0] || 'U'}
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--primary)', color: '#fff', borderRadius: '50%' }}>
+                            <UserIcon size={20} strokeWidth={2.5} />
                         </div>
                     )}
                 </Link>
