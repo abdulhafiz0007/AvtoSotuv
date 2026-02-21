@@ -1,15 +1,16 @@
 import { create } from 'zustand';
 import api from '../api/client';
-import type { User, Car, Constants, Filters, Locale } from '../types';
+import type { User, Car, Service, Constants, Filters, Locale } from '../types';
 
 interface AppState {
     // Auth
     user: User | null;
     token: string | null;
-    isLoading: boolean;
+    loading: boolean;
 
     // Data
     cars: Car[];
+    services: Service[];
     totalCars: number;
     totalPages: number;
     currentPage: number;
@@ -24,7 +25,12 @@ interface AppState {
     logout: () => void;
     setLocale: (locale: Locale) => void;
     fetchCars: (filters?: Filters) => Promise<void>;
+    fetchServices: (type?: string) => Promise<void>;
     fetchConstants: () => Promise<void>;
+    setUser: (user: User | null) => void;
+    setCars: (cars: Car[]) => void;
+    setServices: (services: Service[]) => void;
+    setLoading: (loading: boolean) => void;
     setFilters: (filters: Partial<Filters>) => void;
     resetFilters: () => void;
 
@@ -41,8 +47,9 @@ export const useStore = create<AppState>((set, get) => ({
     // Initial state
     user: null,
     token: localStorage.getItem('avtosotuv_token'),
-    isLoading: false,
+    loading: false,
     cars: [],
+    services: [],
     totalCars: 0,
     totalPages: 0,
     currentPage: 1,
@@ -52,13 +59,13 @@ export const useStore = create<AppState>((set, get) => ({
 
     login: async (initData: string) => {
         try {
-            set({ isLoading: true });
+            set({ loading: true });
             const res = await api.post('/auth/login', { initData });
             const { token, user } = res.data;
             localStorage.setItem('avtosotuv_token', token);
-            set({ user, token, isLoading: false });
+            set({ user, token, loading: false });
         } catch (error) {
-            set({ isLoading: false });
+            set({ loading: false });
             console.error('Login failed:', error);
         }
     },
@@ -75,7 +82,7 @@ export const useStore = create<AppState>((set, get) => ({
 
     fetchCars: async (filters?: Filters) => {
         try {
-            set({ isLoading: true });
+            set({ loading: true });
             const params = filters || get().filters;
             const cleanParams: Record<string, string> = {};
             Object.entries(params).forEach(([key, value]) => {
@@ -89,13 +96,30 @@ export const useStore = create<AppState>((set, get) => ({
                 totalCars: res.data.total,
                 totalPages: res.data.totalPages,
                 currentPage: res.data.page,
-                isLoading: false,
+                loading: false,
             });
         } catch (error) {
-            set({ isLoading: false });
+            set({ loading: false });
             console.error('Fetch cars failed:', error);
         }
     },
+
+    fetchServices: async (type?: string) => {
+        try {
+            set({ loading: true });
+            const params = type ? { type } : {};
+            const res = await api.get('/services', { params });
+            set({ services: res.data.services, loading: false });
+        } catch (error) {
+            set({ loading: false });
+            console.error('Fetch services failed:', error);
+        }
+    },
+
+    setUser: (user: User | null) => set({ user }),
+    setCars: (cars: Car[]) => set({ cars }),
+    setLoading: (loading: boolean) => set({ loading }),
+    setServices: (services: Service[]) => set({ services }),
 
     fetchConstants: async () => {
         try {

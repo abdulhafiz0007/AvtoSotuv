@@ -6,6 +6,10 @@ interface Props {
     car: Car;
 }
 
+export const formatPrice = (price: number) => {
+    return price.toLocaleString();
+};
+
 const CarCard: React.FC<Props> = ({ car }) => {
     const mainImage = car.images?.[0]?.imageUrl || '/uploads/placeholder.jpg';
 

@@ -63,3 +63,17 @@ export interface Constants {
 }
 
 export type Locale = 'uz' | 'ru';
+
+export interface Service {
+    id: number;
+    title: string;
+    type: string;
+    address: string;
+    city: string;
+    lat: number | null;
+    lng: number | null;
+    phone: string | null;
+    description: string | null;
+    rating: number;
+    createdAt: string;
+}
