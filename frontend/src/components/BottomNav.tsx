@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useStore } from '../store';
-import { Home, MapPin, PlusSquare, User } from 'lucide-react';
+import { Home, MapPin, PlusCircle, User } from 'lucide-react';
 
 const BottomNav: React.FC = () => {
     const { t } = useStore();
@@ -17,7 +17,7 @@ const BottomNav: React.FC = () => {
                 <span>{t('services')}</span>
             </NavLink>
             <NavLink to="/create" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
-                <PlusSquare size={22} />
+                <PlusCircle size={22} />
                 <span>{t('create')}</span>
             </NavLink>
             <NavLink to="/profile" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>

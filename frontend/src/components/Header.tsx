@@ -17,9 +17,6 @@ const Header: React.FC = () => {
             <div className="header__actions">
                 {/* Language Switcher */}
                 <div className="lang-switcher">
-                    <div className="lang-icon" style={{ padding: '0 4px', color: 'var(--hint)' }}>
-                        <Languages size={14} />
-                    </div>
                     {locales.map(l => (
                         <button
                             key={l}
