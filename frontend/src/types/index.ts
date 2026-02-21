@@ -62,7 +62,7 @@ export interface Constants {
     };
 }
 
-export type Locale = 'uz' | 'ru';
+export type Locale = 'uz' | 'ru' | 'en';
 
 export interface Service {
     id: number;

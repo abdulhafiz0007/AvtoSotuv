@@ -27,6 +27,9 @@ const App: React.FC = () => {
         const login = async () => {
             setLoading(true);
             try {
+                // Fetch constants for translations
+                useStore.getState().fetchConstants();
+
                 const telegram = (window as any).Telegram?.WebApp;
                 const initData = telegram?.initData;
 
