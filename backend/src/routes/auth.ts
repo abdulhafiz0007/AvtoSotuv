@@ -28,9 +28,12 @@ router.post('/login', async (req: Request, res: Response): Promise<void> => {
         }
 
         if (!telegramUser) {
+            console.error('❌ Telegram auth failed for initData:', initData.substring(0, 50) + '...');
             res.status(401).json({ error: 'Telegram autentifikatsiya xatosi' });
             return;
         }
+
+        console.log('✅ Telegram auth success for user:', telegramUser.first_name, `(ID: ${telegramUser.id})`);
 
         // Find or create user
         let user = await prisma.user.findUnique({

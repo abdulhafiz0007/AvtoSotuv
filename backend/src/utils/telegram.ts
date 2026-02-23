@@ -34,7 +34,12 @@ export function verifyTelegramInitData(initData: string): TelegramUser | null {
             .update(dataCheckString)
             .digest('hex');
 
-        if (calculatedHash !== hash) return null;
+        if (calculatedHash !== hash) {
+            console.error('❌ Hash mismatch!');
+            console.error('Calculated:', calculatedHash);
+            console.error('Received:', hash);
+            return null;
+        }
 
         // Check auth_date is not too old (allow 24 hours)
         const authDate = parseInt(urlParams.get('auth_date') || '0', 10);
