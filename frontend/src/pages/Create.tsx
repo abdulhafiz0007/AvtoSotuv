@@ -70,7 +70,7 @@ const Create: React.FC = () => {
                 imageUrls: uploadRes.data.urls,
             });
 
-            fetchCars();
+            await fetchCars();
             navigate('/');
         } catch (err: any) {
             console.error('Submit error:', err);

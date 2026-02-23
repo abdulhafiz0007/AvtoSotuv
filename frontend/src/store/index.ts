@@ -139,6 +139,8 @@ interface AppState {
     totalPages: number;
     currentPage: number;
     constants: Constants | null;
+    globalError: string | null;
+    isInitialized: boolean;
 
     // UI
     locale: Locale;
@@ -159,6 +161,8 @@ interface AppState {
     setTheme: (theme: 'light' | 'dark') => void;
     setFilters: (filters: Partial<Filters>) => void;
     resetFilters: () => void;
+    setError: (error: string | null) => void;
+    setInitialized: (val: boolean) => void;
 
     // Translation helper
     t: (key: string) => string;
@@ -183,6 +187,8 @@ export const useStore = create<AppState>((set, get) => ({
     locale: (localStorage.getItem('avtosotuv_locale') as Locale) || 'uz',
     theme: (localStorage.getItem('avtosotuv_theme') as 'light' | 'dark') || 'light',
     filters: { ...defaultFilters },
+    globalError: null,
+    isInitialized: false,
 
     login: async (initData: string) => {
         try {
@@ -253,6 +259,8 @@ export const useStore = create<AppState>((set, get) => ({
     setCars: (cars: Car[]) => set({ cars }),
     setLoading: (loading: boolean) => set({ loading }),
     setServices: (services: Service[]) => set({ services }),
+    setError: (error: string | null) => set({ globalError: error }),
+    setInitialized: (isInitialized: boolean) => set({ isInitialized }),
 
     fetchConstants: async () => {
         try {

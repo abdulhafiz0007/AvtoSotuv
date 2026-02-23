@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useStore } from '../store';
 
 const api = axios.create({
     baseURL: '/api',
@@ -20,9 +21,17 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        const message = error.response?.data?.error || error.message || 'Tarmoq xatosi';
+
         if (error.response?.status === 401) {
             localStorage.removeItem('avtosotuv_token');
+            useStore.getState().setUser(null);
+        } else if (error.response?.status !== 404) {
+            // Don't show global error for 404s (e.g. missing images or individual car details)
+            // But show for other critical failures
+            useStore.getState().setError(message);
         }
+
         return Promise.reject(error);
     }
 );
