@@ -31,7 +31,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 // GET /api/services/:id - service detail
 router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id as string, 10);
         if (isNaN(id)) {
             res.status(400).json({ error: 'Noto\'g\'ri ID' });
             return;

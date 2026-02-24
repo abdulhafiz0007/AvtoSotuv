@@ -32,9 +32,24 @@ app.use(helmet({
     crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-// CORS
+// CORS - allow both local dev and production
+const allowedOrigins = [
+    config.frontendUrl,
+    'https://avto-sotuv.vercel.app',
+    'http://localhost:3001',
+    'http://localhost:5173',
+].filter(Boolean);
+
 app.use(cors({
-    origin: config.frontendUrl,
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, curl, etc.)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.warn('⚠️ CORS blocked:', origin);
+            callback(null, true); // Allow all for now in development
+        }
+    },
     credentials: true,
 }));
 

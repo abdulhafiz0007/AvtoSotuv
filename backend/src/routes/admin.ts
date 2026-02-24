@@ -82,7 +82,7 @@ router.get('/cars', async (req: Request, res: Response): Promise<void> => {
 // DELETE /api/admin/cars/:id
 router.delete('/cars/:id', async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id as string, 10);
         await prisma.car.update({
             where: { id },
             data: { status: 'deleted' },
@@ -133,7 +133,7 @@ router.get('/users', async (req: Request, res: Response): Promise<void> => {
 // PUT /api/admin/users/:id/block
 router.put('/users/:id/block', async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id as string, 10);
         const user = await prisma.user.findUnique({ where: { id } });
 
         if (!user) {

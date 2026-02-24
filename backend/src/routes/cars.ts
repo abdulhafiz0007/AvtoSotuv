@@ -99,7 +99,7 @@ router.get('/my', authMiddleware, async (req: Request, res: Response): Promise<v
 // GET /api/cars/:id - car detail
 router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id as string, 10);
         if (isNaN(id)) {
             res.status(400).json({ error: 'Noto\'g\'ri ID' });
             return;
@@ -179,7 +179,7 @@ router.post(
 // DELETE /api/cars/:id
 router.delete('/:id', authMiddleware, async (req: Request, res: Response): Promise<void> => {
     try {
-        const id = parseInt(req.params.id, 10);
+        const id = parseInt(req.params.id as string, 10);
 
         const car = await prisma.car.findUnique({ where: { id } });
         if (!car) {
