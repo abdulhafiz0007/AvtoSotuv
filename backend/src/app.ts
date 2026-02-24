@@ -102,6 +102,13 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
 app.listen(config.port, () => {
     console.log(`🚗 AvtoSotuv API running on http://localhost:${config.port}`);
     console.log(`📦 Environment: ${config.nodeEnv}`);
+
+    // Start Telegram bot in the same process
+    import('./bot').then(({ startBot }) => {
+        startBot();
+    }).catch(err => {
+        console.error('Failed to load bot module:', err);
+    });
 });
 
 export default app;
