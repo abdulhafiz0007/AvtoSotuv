@@ -109,6 +109,11 @@ app.listen(config.port, () => {
     }).catch(err => {
         console.error('Failed to load bot module:', err);
     });
+
+    // Keep-alive logging for Render logs (every 5 minutes)
+    setInterval(() => {
+        console.log(`⏱️ Keep-alive check: ${new Date().toISOString()}`);
+    }, 5 * 60 * 1000);
 });
 
 export default app;
