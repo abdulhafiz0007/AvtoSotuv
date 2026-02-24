@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useStore } from '../store';
 import { formatPrice } from '../components/CarCard';
 import api from '../api/client';
+import { resolveImageUrl } from '../utils/imageUrl';
 import type { Car } from '../types';
 
 const Detail: React.FC = () => {
@@ -67,7 +68,7 @@ const Detail: React.FC = () => {
                 {images.length > 0 ? (
                     <img
                         className="detail__gallery-image"
-                        src={images[currentImage]?.imageUrl}
+                        src={resolveImageUrl(images[currentImage]?.imageUrl)}
                         alt={car.title}
                         style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover' }}
                     />
