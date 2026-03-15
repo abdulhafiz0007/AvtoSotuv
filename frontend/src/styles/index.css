@@ -93,9 +93,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  background: var(--bg);
   border-bottom: 1px solid var(--glass-border);
 }
 
@@ -238,7 +236,6 @@ header {
 .bottom-nav {
   position: fixed;
   bottom: 0px;
-  /* Rest on the bottom */
   left: 0;
   right: 0;
   display: flex;
@@ -248,8 +245,7 @@ header {
   backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
   border-top: 1px solid var(--glass-border);
-  padding: 10px 16px 24px 16px;
-  /* Extra padding for iOS home indicator area */
+  padding: 8px 16px 20px 16px;
   z-index: 100;
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
@@ -291,17 +287,16 @@ header {
 }
 
 .center-btn-icon {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--primary);
   color: white;
   border-radius: 50%;
-  box-shadow: 0 8px 16px rgba(51, 144, 236, 0.4);
+  box-shadow: 0 4px 12px rgba(51, 144, 236, 0.4);
   transition: transform 0.2s;
-  border: 4px solid var(--bg);
 }
 
 .center-btn:active .center-btn-icon {

@@ -40,14 +40,6 @@ const App: React.FC = () => {
                     telegram?.expand();
 
                     try {
-                        if (telegram?.requestFullscreen) {
-                            telegram.requestFullscreen();
-                        }
-                    } catch (e) {
-                        // ignore if not supported in older clients
-                    }
-
-                    try {
                         if (telegram?.disableVerticalSwipes) {
                             telegram.disableVerticalSwipes();
                         }
