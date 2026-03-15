@@ -35,8 +35,17 @@ const App: React.FC = () => {
 
                 if (initData || import.meta.env.DEV) {
                     await useStore.getState().login(initData || 'dev_mode');
-                    // Set Telegram theme color
+                    // Set Telegram theme color and swipe behaviors
                     telegram?.expand();
+
+                    try {
+                        if (telegram?.disableVerticalSwipes) {
+                            telegram.disableVerticalSwipes();
+                        }
+                    } catch (e) {
+                        // older telegram clients might throw
+                        console.error('Failed to disable vertical swipes', e);
+                    }
                 }
             } catch (err: any) {
                 console.error('Initialization error:', err);

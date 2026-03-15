@@ -90,6 +90,20 @@ export function startBot() {
             console.error('🤖 Bot polling error:', error.message);
         });
 
+        // Graceful shutdown
+        process.once('SIGINT', () => {
+            bot?.stopPolling();
+            process.exit(0);
+        });
+        process.once('SIGTERM', () => {
+            bot?.stopPolling();
+            process.exit(0);
+        });
+        process.once('SIGUSR2', () => {
+            bot?.stopPolling();
+            process.exit(0);
+        });
+
     } catch (error) {
         console.error('🤖 Failed to start bot:', error);
     }
