@@ -36,7 +36,16 @@ const App: React.FC = () => {
                 if (initData || import.meta.env.DEV) {
                     await useStore.getState().login(initData || 'dev_mode');
                     // Set Telegram theme color and swipe behaviors
+                    telegram?.ready();
                     telegram?.expand();
+
+                    try {
+                        if (telegram?.requestFullscreen) {
+                            telegram.requestFullscreen();
+                        }
+                    } catch (e) {
+                        // ignore if not supported in older clients
+                    }
 
                     try {
                         if (telegram?.disableVerticalSwipes) {
